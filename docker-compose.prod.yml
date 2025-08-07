@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   hajimi-king:
-    image: ghcr.io/yourusername/hajimi-king:${VERSION:-latest}
+    image: ghcr.io/james-6-23/hajimi-king:${VERSION:-latest}
     container_name: hajimi-king-${INSTANCE:-1}
     restart: always
     

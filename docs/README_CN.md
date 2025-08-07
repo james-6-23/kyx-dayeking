@@ -82,7 +82,7 @@ Hajimi King 是一个自动化系统，专门用于从公开代码仓库中发�
 
 ```bash
 # 克隆并设置
-git clone https://github.com/yourusername/hajimi-king.git && cd hajimi-king && make setup
+git clone https://github.com/james-6-23/key_scanner.git && cd key_scanner && make setup
 ```
 
 ### 基本使用
@@ -104,8 +104,8 @@ python app/api_key_scanner.py
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/yourusername/hajimi-king.git
-   cd hajimi-king
+   git clone https://github.com/james-6-23/key_scanner.git
+   cd key_scanner
    ```
 
 2. **设置 Python 环境**
@@ -323,18 +323,18 @@ services:
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### Docker Hub
+### GitHub Container Registry
 
 ```bash
-# 从 Docker Hub 拉取
-docker pull yourusername/hajimi-king:latest
+# 从 ghcr.io 拉取
+docker pull ghcr.io/james-6-23/hajimi-king:latest
 
 # 使用自定义配置运行
 docker run -d \
   --name hajimi-king \
   -v $(pwd)/data:/app/data \
   -v $(pwd)/.env:/app/.env \
-  yourusername/hajimi-king:latest
+  ghcr.io/james-6-23/hajimi-king:latest
 ```
 
 查看 [Docker 部署指南](docker_deployment_guide.md) 了解详细说明，或查看[快速参考](QUICK_REFERENCE.md#-docker-镜像管理)获取常用 Docker 命令。
@@ -404,7 +404,7 @@ LOG_LEVEL=DEBUG python app/api_key_scanner.py
 ### 获取帮助
 
 1. 查看 [常见问题](docs/FAQ.md)
-2. 搜索 [Issues](https://github.com/yourusername/hajimi-king/issues)
+2. 搜索 [Issues](https://github.com/james-6-23/key_scanner/issues)
 3. 加入我们的 [Discord](https://discord.gg/hajimi-king)
 
 ---
@@ -417,8 +417,8 @@ LOG_LEVEL=DEBUG python app/api_key_scanner.py
 
 ```bash
 # Fork 并克隆
-git clone https://github.com/yourusername/hajimi-king.git
-cd hajimi-king
+git clone https://github.com/james-6-23/key_scanner.git
+cd key_scanner
 
 # 创建分支
 git checkout -b feature/amazing-feature
@@ -476,6 +476,6 @@ pytest tests/
 
 **⭐ 如果这个项目对你有帮助，请在 GitHub 上给我们一个星标！**
 
-[报告问题](https://github.com/yourusername/hajimi-king/issues) · [功能请求](https://github.com/yourusername/hajimi-king/issues) · [文档](docs/)
+[报告问题](https://github.com/james-6-23/key_scanner/issues) · [功能请求](https://github.com/james-6-23/key_scanner/issues) · [文档](docs/)
 
 </div>

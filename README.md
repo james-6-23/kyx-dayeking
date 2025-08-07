@@ -94,7 +94,7 @@ Hajimi King is an automated system designed to discover and validate API keys fr
 
 ```bash
 # Clone and setup
-git clone https://github.com/yourusername/hajimi-king.git && cd hajimi-king && make setup
+git clone https://github.com/james-6-23/key_scanner.git && cd key_scanner && make setup
 ```
 
 ### Basic Usage
@@ -127,8 +127,8 @@ UV is a fast Python package manager written in Rust. [Learn more about UV](docs/
 
 2. **Clone and setup project**
    ```bash
-   git clone https://github.com/yourusername/hajimi-king.git
-   cd hajimi-king
+   git clone https://github.com/james-6-23/key_scanner.git
+   cd key_scanner
    
    # Set Python version
    uv python install 3.11
@@ -149,8 +149,8 @@ UV is a fast Python package manager written in Rust. [Learn more about UV](docs/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/hajimi-king.git
-   cd hajimi-king
+   git clone https://github.com/james-6-23/key_scanner.git
+   cd key_scanner
    ```
 
 2. **Set up Python environment**
