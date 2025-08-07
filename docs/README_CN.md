@@ -81,7 +81,12 @@ Hajimi King 是一个自动化系统，专门用于从公开代码仓库中发�
 ### 一键安装
 
 ```bash
-# 克隆并设置
+# 使用 uv（推荐）
+git clone https://github.com/james-6-23/key_scanner.git && cd key_scanner
+uv venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
+
+# 或使用 make
 git clone https://github.com/james-6-23/key_scanner.git && cd key_scanner && make setup
 ```
 
@@ -109,10 +114,70 @@ python app/api_key_scanner.py
    ```
 
 2. **设置 Python 环境**
+
+   #### 选项 A：使用 uv（推荐 - 更快速的包管理）
+   
+   uv 是一个用 Rust 编写的极快的 Python 包管理器，比 pip 快 10-100 倍。
+   
+   **安装 uv：**
    ```bash
-   # 使用 venv
+   # Windows (PowerShell)
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   
+   # macOS 和 Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # 或使用 pip 安装
+   pip install uv
+   ```
+   
+   **使用 uv 创建和管理虚拟环境：**
+   ```bash
+   # 创建虚拟环境
+   uv venv
+   
+   # 激活虚拟环境
+   # Linux/macOS:
+   source .venv/bin/activate
+   
+   # Windows (cmd):
+   .venv\Scripts\activate.bat
+   
+   # Windows (PowerShell):
+   .venv\Scripts\Activate.ps1
+   
+   # 使用 uv 安装项目依赖（三种方式）
+   
+   # 方式1：使用 pyproject.toml 安装（推荐 - 现代Python项目标准）
+   uv pip install -e .
+   
+   # 方式2：使用 requirements.txt 安装
+   uv pip install -r requirements.txt
+   
+   # 方式3：使用 uv 同步依赖（确保精确版本匹配）
+   uv pip sync requirements.txt
+   ```
+   
+   **uv 的优势：**
+   - ⚡ 极快的安装速度（比 pip 快 10-100 倍）
+   - 🔒 更好的依赖解析
+   - 💾 全局缓存，节省磁盘空间
+   - 🔄 自动处理 Python 版本
+   
+   **使用 pyproject.toml 的好处：**
+   - 📦 现代 Python 打包标准（PEP 517/518）
+   - 🔧 统一的项目配置文件
+   - 📝 更好的元数据管理
+   - 🚀 支持可编辑安装（-e 选项）
+   
+   #### 选项 B：使用传统 venv
+   ```bash
+   # 创建虚拟环境
    python -m venv .venv
-   source .venv/bin/activate  # Windows 上使用: .venv\Scripts\activate
+   
+   # 激活虚拟环境
+   source .venv/bin/activate  # Linux/macOS
+   .venv\Scripts\activate     # Windows
    
    # 安装依赖
    pip install -r requirements.txt

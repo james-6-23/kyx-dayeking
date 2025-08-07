@@ -452,16 +452,58 @@ class FileManager:
         """创建默认的查询文件"""
         try:
             os.makedirs(os.path.dirname(queries_file), exist_ok=True)
-            with open(queries_file, "w", encoding="utf-8") as f:
-                f.write("# GitHub搜索查询配置文件\n")
-                f.write("# 每行一个查询语句，支持GitHub搜索语法\n")
-                f.write("# 以#开头的行为注释，空行会被忽略\n")
-                f.write("\n")
-                f.write("# 基础API密钥搜索\n")
-                f.write("AIzaSy in:file\n")
-                f.write("AIzaSy in:file filename:.env\n")
-                f.write("AIzaSy in:file filename:env.example\n")
-            logger.info(f"Created default queries file: {queries_file}")
+            
+            # 首先尝试从 queries.example 复制内容
+            example_file = os.path.join(os.path.dirname(self.data_dir), "queries.example")
+            if os.path.exists(example_file):
+                with open(example_file, "r", encoding="utf-8") as src:
+                    content = src.read()
+                with open(queries_file, "w", encoding="utf-8") as dst:
+                    dst.write(content)
+                logger.info(f"Created queries file from queries.example: {queries_file}")
+            else:
+                # 如果 queries.example 不存在，创建包含丰富内容的默认文件
+                with open(queries_file, "w", encoding="utf-8") as f:
+                    f.write("# GitHub搜索查询配置文件\n")
+                    f.write("# 每行一个查询语句，支持GitHub搜索语法\n")
+                    f.write("# 以#开头的行为注释，空行会被忽略\n")
+                    f.write("\n")
+                    f.write("# ===== 核心搜索策略 =====\n")
+                    f.write("# 基础广泛搜索\n")
+                    f.write("AIzaSy in:file\n")
+                    f.write("\n")
+                    f.write("# 环境变量文件（最常见的密钥存储位置）\n")
+                    f.write("AIzaSy in:file filename:.env\n")
+                    f.write("AIzaSy in:file filename:.env.example\n")
+                    f.write("AIzaSy in:file filename:.env.local\n")
+                    f.write("\n")
+                    f.write("# 配置文件\n")
+                    f.write("AIzaSy in:file filename:config extension:json\n")
+                    f.write("AIzaSy in:file filename:config extension:yaml\n")
+                    f.write("AIzaSy in:file filename:settings extension:json\n")
+                    f.write("\n")
+                    f.write("# Python 项目\n")
+                    f.write('AIzaSy in:file extension:py "GEMINI_API_KEY"\n')
+                    f.write("AIzaSy in:file language:python filename:config.py\n")
+                    f.write("\n")
+                    f.write("# JavaScript/TypeScript 项目\n")
+                    f.write('AIzaSy in:file extension:js "GEMINI_API_KEY"\n')
+                    f.write("AIzaSy in:file language:javascript filename:config.js\n")
+                    f.write("\n")
+                    f.write("# 示例文件（经常包含真实密钥）\n")
+                    f.write("AIzaSy in:file filename:example extension:env\n")
+                    f.write("AIzaSy in:file filename:sample extension:env\n")
+                    f.write("\n")
+                    f.write("# 组合搜索\n")
+                    f.write('"AIzaSy" "gemini" in:file\n')
+                    f.write('"AIzaSy" "api" "key" in:file\n')
+                    f.write("\n")
+                    f.write("# 最近更新（30天内）\n")
+                    f.write(f"AIzaSy in:file pushed:>{datetime.now().strftime('%Y-%m-%d')}\n")
+                    f.write("\n")
+                    f.write("# 小文件搜索（配置文件通常较小）\n")
+                    f.write("AIzaSy in:file size:<10000\n")
+                logger.info(f"Created default queries file with rich content: {queries_file}")
         except Exception as e:
             logger.error(f"Failed to create default queries file {queries_file}: {e}")
 
