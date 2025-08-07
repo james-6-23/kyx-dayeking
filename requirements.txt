@@ -1,0 +1,19 @@
+# Hajimi King Requirements
+# Generated from pyproject.toml
+# For UV users: use `uv pip install -r pyproject.toml` instead
+
+# Core dependencies
+google-generativeai>=0.8.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+tqdm>=4.65.0
+
+# Google API dependencies
+google-api-python-client>=2.100.0
+google-auth>=2.20.0
+google-auth-httplib2>=0.1.0
+
+# Optional: For development
+# pytest>=7.0.0
+# black>=23.0.0
+# ruff>=0.1.0

@@ -3,18 +3,48 @@
 ## 🚀 快速开始
 
 ### 1. 环境设置
+
+#### 使用 UV（推荐）
 ```bash
-# 复制环境变量文件
+# 安装 UV
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/macOS
+# 或
+irm https://astral.sh/uv/install.ps1 | iex       # Windows PowerShell
+
+# 设置 Python 版本
+uv python install 3.11
+uv python pin 3.11
+
+# 创建虚拟环境
+uv venv
+
+# 激活环境
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate     # Windows
+
+# 安装依赖
+uv pip install -r pyproject.toml
+
+# 复制配置文件
 cp env.example .env
-
-# 编辑 .env 文件，设置你的 Gemini API 密钥
-# GEMINI_API_KEY=your_actual_api_key_here
-
-# 复制查询配置文件
 cp queries.example data/queries.txt
+```
 
-# 编辑查询文件，自定义搜索模式
-# nano data/queries.txt
+#### 使用传统 pip/venv
+```bash
+# 创建虚拟环境
+python -m venv .venv
+
+# 激活环境
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate     # Windows
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 复制配置文件
+cp env.example .env
+cp queries.example data/queries.txt
 ```
 
 ### 2. 运行程序
@@ -235,6 +265,34 @@ wc -l data/scanned_shas.txt
 - [代理配置指南](proxy_configuration_guide.md)
 - [查询优化指南](queries_optimization_guide.md)
 
+## 🛠️ UV 命令速查
+
+```bash
+# UV 安装
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/macOS
+irm https://astral.sh/uv/install.ps1 | iex       # Windows
+
+# Python 管理
+uv python list              # 列出可用版本
+uv python install 3.11      # 安装 Python
+uv python pin 3.11          # 设置项目版本
+
+# 虚拟环境
+uv venv                     # 创建虚拟环境
+uv venv --python 3.11       # 指定版本创建
+
+# 包管理
+uv pip install package      # 安装包
+uv pip install -r file.txt  # 从文件安装
+uv pip list                 # 列出已安装包
+uv pip show package         # 显示包信息
+
+# 依赖管理
+uv add package              # 添加依赖到 pyproject.toml
+uv pip compile              # 生成锁文件
+uv pip sync                 # 同步依赖
+```
+
 ## 💡 提示
 
 1. **使用并行版本**：`api_key_scanner.py` 比 `hajimi_king.py` 快很多
@@ -243,6 +301,7 @@ wc -l data/scanned_shas.txt
 4. **版本管理**：使用 Git 标签管理版本
 5. **安全第一**：永远不要提交 `.env` 文件
 6. **自定义查询**：编辑 `data/queries.txt` 而不是 `queries.example`
+7. **使用 UV**：比 pip 快 10-100 倍，推荐用于本地开发
 
 ---
 

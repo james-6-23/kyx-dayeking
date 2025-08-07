@@ -12,6 +12,7 @@
 
 ### 使用指南
 - [快速参考手册](guides/QUICK_REFERENCE.md) - 常用命令和操作的快速参考
+- [UV 工具使用指南](guides/uv_setup_guide.md) - 现代化 Python 环境管理（推荐）
 - [项目结构说明](guides/PROJECT_STRUCTURE.md) - 详细的项目文件结构
 - [查询优化指南](guides/queries_optimization_guide.md) - GitHub 搜索查询优化策略
 - [数据目录说明](guides/data_directory_explanation.md) - 数据目录结构和用途
@@ -41,8 +42,9 @@
 
 ### 新手入门
 1. 阅读[项目说明](../README.md)了解项目概况
-2. 查看[快速参考手册](guides/QUICK_REFERENCE.md)快速上手
-3. 参考[Docker 部署指南](deployment/docker_deployment_guide.md)进行部署
+2. 安装 [UV 工具](guides/uv_setup_guide.md)设置开发环境
+3. 查看[快速参考手册](guides/QUICK_REFERENCE.md)快速上手
+4. 参考[Docker 部署指南](deployment/docker_deployment_guide.md)进行部署
 
 ### 开发者
 1. 了解[项目结构](guides/PROJECT_STRUCTURE.md)

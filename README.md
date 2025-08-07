@@ -112,7 +112,40 @@ python app/api_key_scanner.py
 
 ## 📦 Installation
 
-### Method 1: Local Installation
+### Method 1: Using UV (Recommended) 🚀
+
+UV is a fast Python package manager written in Rust. [Learn more about UV](docs/guides/uv_setup_guide.md)
+
+1. **Install UV**
+   ```bash
+   # macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Windows
+   irm https://astral.sh/uv/install.ps1 | iex
+   ```
+
+2. **Clone and setup project**
+   ```bash
+   git clone https://github.com/yourusername/hajimi-king.git
+   cd hajimi-king
+   
+   # Set Python version
+   uv python install 3.11
+   uv python pin 3.11
+   
+   # Create virtual environment
+   uv venv
+   
+   # Activate environment
+   source .venv/bin/activate  # macOS/Linux
+   .venv\Scripts\activate     # Windows
+   
+   # Install dependencies
+   uv pip install -r pyproject.toml
+   ```
+
+### Method 2: Traditional pip/venv
 
 1. **Clone the repository**
    ```bash
@@ -143,7 +176,7 @@ python app/api_key_scanner.py
    # Edit data/queries.txt to customize your search patterns
    ```
 
-### Method 2: Docker Installation
+### Method 3: Docker Installation
 
 ```bash
 # Using docker-compose
@@ -154,7 +187,7 @@ docker build -t hajimi-king:latest .
 docker run -d --name hajimi-king -v ./data:/app/data hajimi-king:latest
 ```
 
-### Method 3: Using Makefile
+### Method 4: Using Makefile
 
 ```bash
 # View available commands
