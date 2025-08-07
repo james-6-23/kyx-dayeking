@@ -364,6 +364,9 @@ For complete API reference, see [API Documentation](docs/api/).
 
 ## 🐳 Docker Deployment
 
+> **⚠️ Important Update (2024-12-07)**: The original `cmj2002/warp` proxy image is no longer available. We've updated the configuration to use `caomingjun/warp` instead. If you encounter image pull errors, please update your `docker-compose.yml` or use our fix scripts.
+
+
 ### Development Environment
 
 ```yaml

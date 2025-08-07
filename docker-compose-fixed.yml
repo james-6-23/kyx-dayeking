@@ -70,9 +70,9 @@ services:
       - "com.hajimi.version=0.0.1-beta"
       - "com.hajimi.maintainer=your-email@example.com"
 
-  # 可选：添加代理服务（使用可用的镜像）
-  warp-proxy:
-    image: caomingjun/warp:latest  # 修复：使用可用的镜像替代 cmj2002/warp
+  # 方案1：使用官方的 Cloudflare WARP 镜像
+  warp-proxy-official:
+    image: caomingjun/warp:latest
     container_name: warp-proxy
     restart: unless-stopped
     ports:
@@ -93,6 +93,45 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
+
+  # 方案2：使用 e7h4n/cloudflare-warp 镜像（备选）
+  warp-proxy-alternative:
+    image: e7h4n/cloudflare-warp:latest
+    container_name: warp-proxy-alt
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1081:1080"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - hajimi-network
+    profiles:
+      - proxy-alt
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # 方案3：使用通用的 SOCKS5 代理
+  socks5-proxy:
+    image: serjs/go-socks5-proxy:latest
+    container_name: socks5-proxy
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1082:1080"
+    environment:
+      - PROXY_USER=
+      - PROXY_PASSWORD=
+    networks:
+      - hajimi-network
+    profiles:
+      - socks5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 128M
 
 # 网络定义
 networks:
