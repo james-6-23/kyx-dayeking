@@ -136,6 +136,13 @@ python app/api_key_scanner.py
    # Edit .env with your configuration
    ```
 
+4. **Configure search queries**
+   ```bash
+   # Copy the example queries file
+   cp queries.example data/queries.txt
+   # Edit data/queries.txt to customize your search patterns
+   ```
+
 ### Method 2: Docker Installation
 
 ```bash
@@ -244,7 +251,20 @@ DATA_PATH=./data                               # Data directory path
 
 ### Search Queries Configuration
 
-Edit `data/queries.txt` to customize search patterns:
+The project uses a two-file approach for search queries:
+- `queries.example` - Example queries file (committed to version control)
+- `data/queries.txt` - Your actual queries file (ignored by git)
+
+To set up your queries:
+```bash
+# First time setup
+cp queries.example data/queries.txt
+
+# Edit with your custom queries
+nano data/queries.txt  # or use your preferred editor
+```
+
+Example query patterns in `data/queries.txt`:
 
 ```bash
 # Basic search
