@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   hajimi-king:
     build:
@@ -95,7 +93,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.28.0.0/16
 
 # 命名卷
 volumes:
