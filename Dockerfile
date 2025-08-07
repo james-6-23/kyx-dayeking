@@ -17,12 +17,11 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # 复制依赖文件
-COPY pyproject.toml ./
+COPY requirements.txt pyproject.toml ./
 
-# 安装Python依赖
+# 安装Python依赖 - 使用requirements.txt确保所有依赖都被安装
 RUN pip install --upgrade pip && \
-    pip install uv && \
-    uv pip install --system -r pyproject.toml
+    pip install -r requirements.txt
 
 # 最终运行阶段
 FROM python:3.11-slim

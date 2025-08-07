@@ -1,5 +1,53 @@
 # Docker 部署故障排除指南
 
+## 最新更新 (2024-12-08)
+
+### 问题: ModuleNotFoundError: No module named 'google'
+
+**错误信息：**
+```
+ModuleNotFoundError: No module named 'google'
+Traceback (most recent call last):
+  File "/app/app/api_key_scanner.py", line 18, in <module>
+    import google.generativeai as genai
+```
+
+**原因：** Dockerfile中的依赖安装命令可能没有正确安装所有必需的包。
+
+**解决方案：**
+
+1. **快速修复 - 重建镜像：**
+   ```bash
+   # Linux/macOS
+   bash scripts/docker-rebuild.sh
+   
+   # Windows PowerShell
+   .\scripts\docker-rebuild.ps1
+   ```
+
+2. **手动修复：**
+   ```bash
+   # 停止容器
+   docker compose down
+   
+   # 删除旧镜像
+   docker rmi hajimi-king:latest
+   
+   # 重新构建（不使用缓存）
+   docker compose build --no-cache
+   
+   # 启动服务
+   docker compose up -d
+   ```
+
+3. **验证依赖安装：**
+   ```bash
+   docker run --rm hajimi-king:latest pip list | grep google
+   ```
+
+---
+
+
 ## 常见问题和解决方案
 
 ### 1. 网络地址池冲突
