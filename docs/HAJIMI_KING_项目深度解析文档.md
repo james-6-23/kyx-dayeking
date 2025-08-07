@@ -48,29 +48,209 @@
 
 ### 2.1 整体架构图
 
+#### 2.1.1 系统组件图（Mermaid）
+
+```mermaid
+graph TB
+    subgraph "Hajimi King System"
+        subgraph "Application Layer"
+            A[hajimi_king.py<br/>主程序入口]
+        end
+        
+        subgraph "Common Layer"
+            B[Config<br/>配置管理]
+            C[Logger<br/>日志系统]
+        end
+        
+        subgraph "Utils Layer"
+            D[GitHubClient<br/>GitHub客户端]
+            E[FileManager<br/>文件管理器]
+            F[SyncUtils<br/>同步工具]
+        end
+        
+        subgraph "External Systems"
+            G[(GitHub API)]
+            H[(Local Storage<br/>本地存储)]
+            I[Gemini Balancer<br/>负载均衡器]
+            J[GPT Load<br/>负载均衡器]
+        end
+    end
+    
+    %% 连接关系
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    
+    B -.-> C
+    
+    D --> G
+    E --> H
+    F --> I
+    F --> J
+    
+    %% 样式定义
+    classDef appLayer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef commonLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef utilsLayer fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef externalLayer fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    
+    class A appLayer
+    class B,C commonLayer
+    class D,E,F utilsLayer
+    class G,H,I,J externalLayer
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Hajimi King 系统                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐    ┌──────────────┐    ┌──────────────┐  │
-│  │   主程序    │    │   配置管理   │    │   日志系统   │  │
-│  │ hajimi_king │───▶│    Config    │◀───│    Logger    │  │
-│  └──────┬──────┘    └──────────────┘    └──────────────┘  │
-│         │                                                   │
-│         ▼                                                   │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                    工具层 (Utils)                    │   │
-│  ├─────────────┬──────────────┬────────────────────────┤   │
-│  │  GitHub客户端│  文件管理器  │      同步工具          │   │
-│  │ GitHubClient│ FileManager  │     SyncUtils          │   │
-│  └─────────────┴──────────────┴────────────────────────┘   │
-│         │              │                    │               │
-│         ▼              ▼                    ▼               │
-│  ┌─────────────┐ ┌──────────┐  ┌─────────────────────┐    │
-│  │ GitHub API  │ │ 本地文件 │  │ 外部负载均衡系统   │    │
-│  └─────────────┘ └──────────┘  └─────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
+
+#### 2.1.2 部署架构图（Mermaid）
+
+```mermaid
+graph LR
+    subgraph "Docker Container"
+        subgraph "Hajimi King Application"
+            APP[Python Application<br/>hajimi_king.py]
+            CONFIG[Configuration<br/>.env]
+            DATA[(Data Volume<br/>/app/data)]
+        end
+    end
+    
+    subgraph "External Services"
+        GITHUB[GitHub API<br/>api.github.com]
+        GEMINI[Gemini API<br/>generativelanguage.googleapis.com]
+        BALANCER[Gemini Balancer<br/>HTTP API]
+        GPTLOAD[GPT Load<br/>HTTP API]
+    end
+    
+    subgraph "Network Layer"
+        PROXY[Proxy Pool<br/>HTTP/SOCKS5]
+    end
+    
+    %% 数据流
+    APP -->|Search Requests| GITHUB
+    APP -->|Validate Keys| GEMINI
+    APP -->|Sync Keys| BALANCER
+    APP -->|Sync Keys| GPTLOAD
+    APP <-->|Read/Write| DATA
+    APP <-->|Load Config| CONFIG
+    
+    APP -.->|Optional| PROXY
+    PROXY -.->|Forward| GITHUB
+    PROXY -.->|Forward| GEMINI
+    
+    %% 样式
+    classDef container fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
+    classDef external fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef network fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    
+    class APP,CONFIG,DATA container
+    class GITHUB,GEMINI,BALANCER,GPTLOAD external
+    class PROXY network
+```
+
+#### 2.1.3 数据流图（Mermaid）
+
+```mermaid
+flowchart TD
+    START([开始]) --> LOAD_CONFIG[加载配置]
+    LOAD_CONFIG --> LOAD_CHECKPOINT[加载检查点]
+    LOAD_CHECKPOINT --> READ_QUERIES[读取查询列表]
+    
+    READ_QUERIES --> SEARCH_LOOP{遍历查询}
+    SEARCH_LOOP -->|有查询| GITHUB_SEARCH[GitHub API搜索]
+    SEARCH_LOOP -->|无查询| SLEEP[休眠等待]
+    
+    GITHUB_SEARCH --> PROCESS_RESULTS{处理结果}
+    PROCESS_RESULTS -->|有结果| FILTER[过滤文件]
+    PROCESS_RESULTS -->|无结果| SEARCH_LOOP
+    
+    FILTER --> EXTRACT_KEYS[提取API密钥]
+    EXTRACT_KEYS --> VALIDATE{验证密钥}
+    
+    VALIDATE -->|有效| SAVE_VALID[保存有效密钥]
+    VALIDATE -->|限流| SAVE_RATE_LIMITED[保存限流密钥]
+    VALIDATE -->|无效| NEXT_ITEM[下一个文件]
+    
+    SAVE_VALID --> SYNC_QUEUE[加入同步队列]
+    SAVE_RATE_LIMITED --> NEXT_ITEM
+    
+    SYNC_QUEUE --> BATCH_SYNC{批量同步<br/>60秒定时器}
+    BATCH_SYNC -->|Gemini Balancer| SYNC_BALANCER[同步到Balancer]
+    BATCH_SYNC -->|GPT Load| SYNC_GPTLOAD[同步到GPT Load]
+    
+    SYNC_BALANCER --> UPDATE_CHECKPOINT[更新检查点]
+    SYNC_GPTLOAD --> UPDATE_CHECKPOINT
+    NEXT_ITEM --> UPDATE_CHECKPOINT
+    
+    UPDATE_CHECKPOINT --> SEARCH_LOOP
+    SLEEP --> START
+    
+    %% 样式定义
+    classDef startEnd fill:#ffebee,stroke:#c62828,stroke-width:3px
+    classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    classDef decision fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef storage fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    
+    class START,SLEEP startEnd
+    class LOAD_CONFIG,LOAD_CHECKPOINT,READ_QUERIES,GITHUB_SEARCH,FILTER,EXTRACT_KEYS,SAVE_VALID,SAVE_RATE_LIMITED,NEXT_ITEM,SYNC_QUEUE,SYNC_BALANCER,SYNC_GPTLOAD,UPDATE_CHECKPOINT process
+    class SEARCH_LOOP,PROCESS_RESULTS,VALIDATE,BATCH_SYNC decision
+```
+
+#### 2.1.4 组件交互时序图（Mermaid）
+
+```mermaid
+sequenceDiagram
+    participant Main as 主程序
+    participant Config as 配置管理
+    participant GitHub as GitHub客户端
+    participant FileManager as 文件管理器
+    participant Validator as 密钥验证器
+    participant SyncUtils as 同步工具
+    participant External as 外部系统
+    
+    Main->>Config: 加载配置
+    Config-->>Main: 返回配置信息
+    
+    Main->>FileManager: 加载检查点
+    FileManager-->>Main: 返回检查点数据
+    
+    Main->>FileManager: 读取查询列表
+    FileManager-->>Main: 返回查询列表
+    
+    loop 对每个查询
+        Main->>GitHub: 搜索代码
+        GitHub->>External: GitHub API请求
+        External-->>GitHub: 返回搜索结果
+        GitHub-->>Main: 返回文件列表
+        
+        loop 对每个文件
+            Main->>GitHub: 获取文件内容
+            GitHub->>External: 获取文件内容
+            External-->>GitHub: 返回文件内容
+            GitHub-->>Main: 返回内容
+            
+            Main->>Main: 提取API密钥
+            
+            Main->>Validator: 验证密钥
+            Validator->>External: Gemini API验证
+            External-->>Validator: 返回验证结果
+            Validator-->>Main: 返回状态
+            
+            alt 密钥有效
+                Main->>FileManager: 保存有效密钥
+                Main->>SyncUtils: 加入同步队列
+            else 密钥限流
+                Main->>FileManager: 保存限流密钥
+            end
+        end
+        
+        Main->>FileManager: 更新检查点
+    end
+    
+    Note over SyncUtils: 每60秒触发一次
+    SyncUtils->>External: 批量同步到Balancer
+    SyncUtils->>External: 批量同步到GPT Load
+    External-->>SyncUtils: 同步结果
+    SyncUtils->>FileManager: 更新队列状态
 ```
 
 ### 2.2 技术栈详解

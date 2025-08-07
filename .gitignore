@@ -1,14 +1,27 @@
 # Python-generated files
 __pycache__/
-*.py[oc]
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 *.so
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
 wheels/
-*.egg-info
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
 *.egg
+MANIFEST
 
 # Virtual environments
 .venv/
@@ -16,12 +29,33 @@ wheels/
 venv/
 env/
 ENV/
+env.bak/
+venv.bak/
+pythonenv*
 
 # Environment variables and configuration
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!.env.docker.example
 *.env
+!env.example
+config.ini
+config.yaml
+config.yml
+secrets.json
+credentials.json
+auth.json
+
+# API Keys and Credentials
+*_key.txt
+*_token.txt
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
 
 # IDE and Editor files
 .idea/
@@ -31,6 +65,11 @@ ENV/
 *~
 .project
 .pydevproject
+.settings/
+.classpath
+*.sublime-project
+*.sublime-workspace
+.kilocode/
 
 # macOS system files
 .DS_Store
@@ -45,31 +84,95 @@ Thumbs.db
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux system files
+.directory
+.Trash-*
+.nfs*
 
 # Logs and temporary files
 *.log
 *.tmp
 *.temp
+*.cache
 logs/
 log/
 tmp/
 temp/
+cache/
 
 # Database files
 *.db
 *.sqlite
 *.sqlite3
+*.sql
+*.dump
 
 # Coverage reports
 htmlcov/
+.tox/
+.nox/
 .coverage
 .coverage.*
+.cache
+nosetests.xml
 coverage.xml
 *.cover
+*.py,cover
+.hypothesis/
 .pytest_cache/
+cover/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
 
 # Docker
 .dockerignore
@@ -78,8 +181,109 @@ coverage.xml
 data/
 keys/
 results/
+output/
+downloads/
+uploads/
 
 # Backup files
 *.bak
 *.backup
 *.orig
+*.old
+*_backup
+*_old
+
+# Personal and local files
+local/
+personal/
+private/
+my_*
+test_*
+debug_*
+TODO.txt
+NOTES.txt
+notes.txt
+todo.txt
+
+# Sensitive data patterns
+*password*
+*secret*
+*credential*
+*token*
+!*example*
+!*template*
+
+# User-specific settings
+user_config/
+user_settings/
+.user/
+
+# Local development
+.local/
+local_*
+dev_*
+
+# Temporary query files (except examples)
+queries.txt
+!queries.example
+
+# Checkpoint and state files
+checkpoint.json
+*.checkpoint
+*.state
+scanned_shas.txt
+
+# Generated documentation
+docs/_build/
+docs/generated/
+
+# Package manager files
+node_modules/
+bower_components/
+vendor/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Media files (if not needed)
+*.mp4
+*.avi
+*.mov
+*.mp3
+*.wav
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Large files
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Ansible
+*.retry
+
+# Vagrant
+.vagrant/
+
+# Custom ignore patterns
+ignore/
+.ignore/
+do_not_commit/

@@ -2,4 +2,38 @@
 # 每行一个查询语句，支持GitHub搜索语法
 # 以#开头的行为注释，空行会被忽略
 
+# ===== 核心搜索策略 =====
+# 基础广泛搜索
 AIzaSy in:file
+
+# 环境变量文件（最常见的密钥存储位置）
+AIzaSy in:file filename:.env
+AIzaSy in:file filename:.env.example
+AIzaSy in:file filename:.env.local
+
+# 配置文件
+AIzaSy in:file filename:config extension:json
+AIzaSy in:file filename:config extension:yaml
+AIzaSy in:file filename:settings extension:json
+
+# Python 项目
+AIzaSy in:file extension:py "GEMINI_API_KEY"
+AIzaSy in:file language:python filename:config.py
+
+# JavaScript/TypeScript 项目
+AIzaSy in:file extension:js "GEMINI_API_KEY"
+AIzaSy in:file language:javascript filename:config.js
+
+# 示例文件（经常包含真实密钥）
+AIzaSy in:file filename:example extension:env
+AIzaSy in:file filename:sample extension:env
+
+# 组合搜索
+"AIzaSy" "gemini" in:file
+"AIzaSy" "api" "key" in:file
+
+# 最近更新（30天内）
+AIzaSy in:file pushed:>2024-12-07
+
+# 小文件搜索（配置文件通常较小）
+AIzaSy in:file size:<10000
